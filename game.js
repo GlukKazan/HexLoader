@@ -93,10 +93,19 @@ function getFen(board, size) {
     return str;
 }
 
+function len(s) {
+    let r = 0;
+    for (let i = 0; i < s.length; i++) {
+        if (_.indexOf(LETTERS, s[i])) r++;
+    }
+    return r;
+}
+
 function load(data) {
-    if (data.length % 2 != 0) return;
+    const l = len(data);
+    if (l % 2 != 0) return;
     let board = new Float32Array(SIZE * SIZE);
-    let winner = (data.length % 4 != 0) ? 1 : -1;
+    let winner = (l % 4 != 0) ? 1 : -1;
     let player = 1;
     let pos = 0;
     while (pos < data.length - 1) {
@@ -123,7 +132,7 @@ function load(data) {
             const fen = getFen(b, SIZE);
             const p = flip(rotate(move, SIZE, ix), SIZE, player);
             const rd = _.random(1, 10000);
-            console.log('insert into ai_fit(variant_id, setup, move, estimate, rd, winner) values(225, \'' + fen + '\', ' + p + ', ' + estimate + ', ' + rd + ', ' + winner + ');');
+            console.log('insert into ai_fit(variant_id, setup, move, estimate, rd, winner) values(225, \'' + fen + '\', ' + p + ', ' + estimate + ', ' + rd + ', ' + winner * player + ');');
         }
         board[move] = player;
         player = -player;
