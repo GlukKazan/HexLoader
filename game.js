@@ -41,8 +41,7 @@ function flip(pos, size, player) {
 }
 
 function isDigit(c) {
-    if (c == '-') return true;
-    return (c >= '0') && (c <= '9');
+    return _.indexOf("-0123456789", c) >= 0;
 }
 
 function pieceNotation(c, p, size) {
@@ -113,10 +112,12 @@ function load(data) {
         while ((pos < data.length) && isDigit(data[pos])) {
             if (data[pos] == '-') {
                 s = -s;
+                pos++;
                 continue;
             }
             estimate += +data[pos] * s;
             s = s / 10;
+            pos++;
         }
         const x = _.indexOf(LETTERS, data[pos]);
         if ((x < 0) || (x >= SIZE)) return;
